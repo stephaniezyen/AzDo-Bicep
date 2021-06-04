@@ -1,4 +1,5 @@
 name: Bicep-StorageAccount-PrivateEndpoint
+
 trigger:
 - main
 
@@ -16,21 +17,18 @@ stages:
   jobs:
   - job: Build
     steps:
-    - task: AzureCLI@2  
-      displayName: 'build bicep artifact' 
-      inputs: 
-        azureSubscription: $(azureSubscription) 
-        scriptType: 'pscore'  
-        scriptLocation: 'inlineScript'  
-        inlineScript: 'az bicep build --file main.bicep'  
-
-    - task: PublishBuildArtifacts@1 
-      displayName: 'Publish artifact in pipeline' 
-      inputs: 
-        PathtoPublish: '$(Build.SourcesDirectory)/main.json'  
-        ArtifactName: 'finishedTemplate'  
-        publishLocation: 'Container' 
-
+    - task: AzureCLI@2
+      displayName: 'build bicep artifact'
+      inputs:
+        azureSubscription: 'Contoso IT – Retail – Pre-Prod(210b13f9-e96d-493c-919e-34e12038a338)'
+        scriptType: 'pscore'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az bicep build --file main.bicep'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'finishedTemplate'
+        publishLocation: 'Container'
 - stage: deploy
   jobs:
   - deployment: biceptoAzure
@@ -41,7 +39,7 @@ stages:
         deploy:
           steps:
           - checkout: self
-          - task: AzureCLI@2
+- task: AzureCLI@2
             displayName: 'deploy bicep template'
             inputs:
               azureSubscription: $(azureSubscription) 
