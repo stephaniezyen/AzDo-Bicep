@@ -39,7 +39,7 @@ stages:
         deploy:
           steps:
           - checkout: self
-- task: AzureCLI@2
+          - task: AzureCLI@2
             displayName: 'deploy bicep template'
             inputs:
               azureSubscription: $(azureSubscription) 
